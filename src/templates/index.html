@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+    <title>Shelter Finder</title>
+  </head>
+  <body>
+    <div class="container">
+
+
+      <!-- ============ -->
+
+      <h1>Find a shelter</h1>
+
+      <div class="row">
+
+
+        <div class="col-sm-10">
+          <form>
+            <div class="form-group">
+              <input type="text" class="form-control" id="address" name="address" placeholder="Enter address">
+            </div>
+          </form>
+        </div>
+
+        <div class="col-sm-2">
+          <button type="search" class="btn btn-primary">Search</button>
+        </div>
+
+      </div>
+
+
+
+      <!-- ============ -->
+
+      <div class="row">
+        <div class="col-sm-10">
+        {% if address %}
+
+
+          {% if found %}
+            <div class="alert alert-success" role="alert">
+              Found address: {{ location.address }}
+            </div>
+
+            
+          {{ df.to_html(index=False, escape=False, classes=["table-bordered", "table-striped", "table-hover"]) | safe }}
+
+   
+
+          {% else %}
+
+          
+
+          <div class="alert alert-danger" role="alert">
+            Couldn't find address: {{ address }}
+          </div>
+
+
+          {% endif %}
+
+        {% endif %}
+        </div>
+      </div>
+
+    </div>
+   
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+  </body>
+</html>
