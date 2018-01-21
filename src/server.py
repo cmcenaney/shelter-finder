@@ -62,6 +62,7 @@ def find_distance(loc):
 	df = pd.read_csv('shelters.csv')
 	df['coord'] = df.apply(lambda row: (row.lat, row.lng), axis=1)
 	df['dist'] = df['coord'].apply(lambda x: vincenty(x, loc).miles)
+	df['dist'] = df['dist'].apply(lambda x: '{} {}'.format(round(x, 1), 'miles'))
 	df['infobox'] = df['name']
 	df = df.sort_values('dist')
 	return df

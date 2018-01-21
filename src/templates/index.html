@@ -50,30 +50,37 @@
 
       <div class="row">
         <div class="col-sm-12">
+          {% if address %}
+            {% if found %}
+
+            <div class="alert alert-success" role="alert">
+              Found address: {{ location.address }}
+            </div>
+
+            {% else %}
+            <div class="alert alert-danger" role="alert">
+              Couldn't find address: {{ address }}
+            </div>
+
+            {% endif %}
+          {% endif %}
+
+
           {% with %}
             {{map.html}}
             {{map.js}}
           {% endwith %}
-          
-        {% if address %}
-          {% if found %}
-          <div class="alert alert-success" role="alert">
-            Found address: {{ location.address }}
-          </div>
-    
-          
 
+          {% if address %}
+            {% if found %}
+            
+            
+            {{ df.to_html(index=False, escape=False, classes=["table", "table-bordered", "table-striped", "table-hover"]) | safe }}
 
+            
+            {% endif %}
 
-          {{ df.to_html(index=False, escape=False, classes=["table", "table-bordered", "table-striped", "table-hover"]) | safe }}
-
-          {% else %}
-          <div class="alert alert-danger" role="alert">
-            Couldn't find address: {{ address }}
-          </div>
           {% endif %}
-
-        {% endif %}
         </div>
 
         
