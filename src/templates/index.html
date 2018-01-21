@@ -14,7 +14,7 @@
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 500px;
+        height: 200px;
       }
       /* Optional: Makes the sample page fill the window. */
       
@@ -46,13 +46,23 @@
 
       <!-- ============ -->
 
+      
+
       <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-12">
         {% if address %}
           {% if found %}
           <div class="alert alert-success" role="alert">
             Found address: {{ location.address }}
           </div>
+    
+          {% with %}
+            {{map.html}}
+            {{map.js}}
+          {% endwith %}
+
+
+
           {{ df.to_html(index=False, escape=False, classes=["table", "table-bordered", "table-striped", "table-hover"]) | safe }}
 
           {% else %}
@@ -64,10 +74,10 @@
         {% endif %}
         </div>
 
-        <div class="col-sm-4">
-          <div id="map"></div>
-        </div>
+        
       </div>
+
+      
 
     </div>
    
@@ -78,17 +88,77 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 
-    <script>
-      var map;
+    <!-- <script>
+  
       function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
+       var shelters = [
+          {
+            "name": "Domestic Violence Shelter - The Open Gate",
+            "address": "2901 Market St, Wilmington, NC 28401, USA",
+            "lat": 34.235848,
+            "long": -77.943268,
+            "url": "http://www.domesticviolence-wilm.org/"
+          },
+          {
+            "name": "Shelter for Battered Women",
+            "address": "600 E 5th St, Charlotte, NC 28202, USA",
+            "lat": 35.22291,
+            "long": -80.835917,
+            "url": "http://www.domesticviolence-wilm.org/"
+          },
+          {
+            "name": "Coastal Women's Shelter",
+            "address": "1333 S Glenburnie Rd, New Bern, NC 28562, USA",
+            "lat": 35.105613,
+            "long": -77.099946,
+            "url": "http://www.domesticviolence-wilm.org/"
+          },
+          {
+            "name": "Onslow Women's Center Inc",
+            "address": "226 New Bridge St, Jacksonville, NC 28540, USA",
+            "lat": 34.749013,
+            "long": -77.4196088,
+            "url": "http://www.domesticviolence-wilm.org/"
+          }
+        ];
+
+        var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: {{location.latitude}}, lng: {{location.longitude}}},
-          zoom: 15
+          zoom: 11
         });
+
+        for (var i in shelters){
+  
+          var shelterCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: {lat: shelters[i].lat, lng: shelters[i].long},
+            radius: 10
+          });
+        }
+
+
+      }
+    </script> -->
+
+   <!--  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_jsi5AzwyTvBQNX4teISdvQ-T5r9YIJA"
+    async defer></script>
+
+    <script type="text/javascript">
+      window.appConfig = {
+        debug: {% if env == 'development' %}true{% else %}false{% endif %},
+        location: {{ location }}
       }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_jsi5AzwyTvBQNX4teISdvQ-T5r9YIJA&callback=initMap"
-    async defer></script>
+
+    <script src="{{url_for('static', filename='script.js')}}"></script> -->
+
+
+
 
     
    
