@@ -50,16 +50,18 @@
 
       <div class="row">
         <div class="col-sm-12">
+          {% with %}
+            {{map.html}}
+            {{map.js}}
+          {% endwith %}
+          
         {% if address %}
           {% if found %}
           <div class="alert alert-success" role="alert">
             Found address: {{ location.address }}
           </div>
     
-          {% with %}
-            {{map.html}}
-            {{map.js}}
-          {% endwith %}
+          
 
 
 
