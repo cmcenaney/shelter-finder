@@ -9,18 +9,26 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
 
     <title>Shelter Finder</title>
+
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 500px;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      
+    </style>
+
   </head>
   <body>
     <div class="container">
 
 
       <!-- ============ -->
-
       <h1>Find a shelter</h1>
 
       <div class="row">
-
-
         <div class="col-sm-10">
           <form>
             <div class="form-group">
@@ -32,7 +40,6 @@
         <div class="col-sm-2">
           <button type="search" class="btn btn-primary">Search</button>
         </div>
-
       </div>
 
 
@@ -40,32 +47,25 @@
       <!-- ============ -->
 
       <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-8">
         {% if address %}
-
-
           {% if found %}
-            <div class="alert alert-success" role="alert">
-              Found address: {{ location.address }}
-            </div>
-
-            
-          {{ df.to_html(index=False, escape=False, classes=["table-bordered", "table-striped", "table-hover"]) | safe }}
-
-   
+          <div class="alert alert-success" role="alert">
+            Found address: {{ location.address }}
+          </div>
+          {{ df.to_html(index=False, escape=False, classes=["table", "table-bordered", "table-striped", "table-hover"]) | safe }}
 
           {% else %}
-
-          
-
           <div class="alert alert-danger" role="alert">
             Couldn't find address: {{ address }}
           </div>
-
-
           {% endif %}
 
         {% endif %}
+        </div>
+
+        <div class="col-sm-4">
+          <div id="map"></div>
         </div>
       </div>
 
@@ -77,5 +77,20 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: {{location.latitude}}, lng: {{location.longitude}}},
+          zoom: 15
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_jsi5AzwyTvBQNX4teISdvQ-T5r9YIJA&callback=initMap"
+    async defer></script>
+
+    
+   
   </body>
 </html>

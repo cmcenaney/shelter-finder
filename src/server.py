@@ -9,12 +9,14 @@ app = Flask(__name__)
 
 
 
-
+# FLASK_APP=server.py FLASK_DEBUG=1 flask run
 
 
 
 @app.route('/')
 def index():
+
+
 
 	address = request.args.get('address', None)
 
@@ -23,6 +25,7 @@ def index():
 	df = None
 
 	if address:
+		print (address)
 		geolocator = Nominatim()
 		location = geolocator.geocode(address)
 
@@ -31,15 +34,15 @@ def index():
 
 
 			df = find_distance((location.latitude, location.longitude))
-			df = df[['name', 'address', 'dist', 'url']]
+			df = df[['name', 'address', 'dist']]
 
-			# df['name'] = df['url'].apply(lambda x: '<a href="{}">{}</a>'.format(x, x))
+			# df['url'] = df['url'].apply(lambda x: '<a href="{}">{}</a>'.format(x, x))
 
-			df['url'] = df['url'].apply(lambda x: '<a href="{}>{}</a>'.format(x, x))
+			# df['url'] = df['url'].apply(lambda x: '<a href="{}>ht</a>'.format(x))
 
-			pd.set_options['display_width', 1000]
 
-			print (df['url'])
+
+			
 
 
 
