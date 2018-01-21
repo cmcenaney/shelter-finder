@@ -55,7 +55,7 @@ def index():
 				lng= location.longitude,
 				markers = markers,
 				style = "height:400px;width:100%;margin:10;",
-				fit_markers_to_bounds = True
+				zoom = 8
 				# markers=[
 				# 	{
 				# 	'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
