@@ -53,7 +53,9 @@ def index():
 				identifier="map",
 				lat= location.latitude,
 				lng= location.longitude,
-				markers = markers
+				markers = markers,
+				style = "height:400px;width:100%;margin:10;",
+				fit_markers_to_bounds = True
 				# markers=[
 				# 	{
 				# 	'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
@@ -106,6 +108,7 @@ def find_distance(loc):
 	df = pd.read_csv('shelters.csv')
 	df['coord'] = df.apply(lambda row: (row.lat, row.lng), axis=1)
 	df['dist'] = df['coord'].apply(lambda x: vincenty(x, loc).miles)
+	df['infobox'] = df['name']
 	df = df.sort_values('dist')
 	return df
 
