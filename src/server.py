@@ -37,16 +37,46 @@ def index():
 
 
 			df = find_distance((location.latitude, location.longitude))
-			df = df[['name', 'address', 'dist']]
-
-			# df['url'] = df['url'].apply(lambda x: '<a href="{}">{}</a>'.format(x, x))
-
-			# df['url'] = df['url'].apply(lambda x: '<a href="{}>ht</a>'.format(x))
 
 
+			# df = df[['name', 'address', 'dist']]
 
+			# df['url'] = df['url'].apply(lambda x: '<a href="{}">{}</a>'.format(x, x))ś
+			# df['url'] = df['url'].apply(lambda x: '<a href="{}>ht</a>'.format(x))ś
+
+
+			print(df.to_dict(orient='records'))
+
+			markers = df.to_dict(orient='records')
+
+			sheltermap = Map(
+				identifier="map",
+				lat= location.latitude,
+				lng= location.longitude,
+				markers = markers
+				# markers=[
+				# 	{
+				# 	'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+				# 	'lat': location.latitude,
+				# 	'lng': location.longitude,
+				# 	'infobox': "<b>Hello</b>"
+				# 	},
+				# 	{
+				# 	'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+				# 	'lat': 37.4300,
+				# 	'lng': -122.1400,
+				# 	'infobox': "<b>Hello World from other place</b>"
+				# 	}
+				# ]
+			)
+
+
+			# [{'name': 'Shelter for Battered Women', 
+			# 'address': '600 E 5th St, Charlotte, NC 28202, USA', 
+			# 'lat': 35.22291, 'long': -80.83591700000001, 'url': 'http://www.domesticviolence-wilm.org/', 'coord': (35.22291, -80.83591700000001), 'dist': 99.6289033528862}, {'name': "Onslow Women's Center Inc", 'address': '226 New Bridge St, Jacksonville, NC 28540, USA', 'lat': 34.749013, 'long': -77.41960879999999, 'url': 'http://www.domesticviolence-wilm.org/', 'coord': (34.749013, -77.41960879999999), 'dist': 119.84833908161018}, {'name': 'Domestic Violence Shelter - The Open Gate', 'address': '2901 Market St, Wilmington, NC 28401, USA', 'lat': 34.235848, 'long': -77.943268, 'url': 'http://www.domesticviolence-wilm.org/', 'coord': (34.235848, -77.943268), 'dist': 123.97659444126984}, {'name': "Coastal Women's Shelter", 'address': '1333 S Glenburnie Rd, New Bern, NC 28562, USA', 'lat': 35.105613, 'long': -77.099946, 'url': 'http://www.domesticviolence-wilm.org/', 'coord': (35.105613, -77.099946), 'dist': 124.65026890597738}]
 			
-
+		
+		
 
 
 
@@ -57,26 +87,9 @@ def index():
 		else:
 			found = False
 
+
 	
-	sheltermap = Map(
-		identifier="map",
-		lat= location.latitude,
-		lng= location.longitude,
-		markers=[
-			{
-			'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-			'lat': location.latitude,
-			'lng': location.longitude,
-			'infobox': "<b>Hello</b>"
-			},
-			{
-			'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-			'lat': 37.4300,
-			'lng': -122.1400,
-			'infobox': "<b>Hello World from other place</b>"
-			}
-		]
-	)
+	
 
 
 			
@@ -91,38 +104,12 @@ def index():
 
 def find_distance(loc):
 	df = pd.read_csv('shelters.csv')
-	df['coord'] = df.apply(lambda row: (row.lat, row.long), axis=1)
+	df['coord'] = df.apply(lambda row: (row.lat, row.lng), axis=1)
 	df['dist'] = df['coord'].apply(lambda x: vincenty(x, loc).miles)
 	df = df.sort_values('dist')
 	return df
 
-def mapview():
-	mymap = Map(
-		identifier="view-side",
-		lat=37.4419,
-		lng=-122.1419,
-		markers=[(37.4419, -122.1419)]
-	)
-	sndmap = Map(
-		identifier="sndmap",
-		lat=37.4419,
-		lng=-122.1419,
-		markers=[
-			{
-			'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-			'lat': 37.4419,
-			'lng': -122.1419,
-			'infobox': "<b>Hello World</b>"
-			},
-			{
-			'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-			'lat': 37.4300,
-			'lng': -122.1400,
-			'infobox': "<b>Hello World from other place</b>"
-			}
-		]
-	)
-	return render_template('index.html', mymap=mymap, sndmap=sndmap)
+
 
 
 
