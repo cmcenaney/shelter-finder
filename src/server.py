@@ -3,6 +3,11 @@ from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 from geopy.geocoders import Nominatim
 from geopy.distance import vincenty
+
+
+from df2gspread import gspread2df as g2d
+
+
 import pandas as pd
 
 
@@ -13,14 +18,30 @@ app.config['GOOGLEMAPS_KEY'] = 'AIzaSyD_jsi5AzwyTvBQNX4teISdvQ-T5r9YIJA'
 GoogleMaps(app)
 
 # FLASK_APP=server.py FLASK_DEBUG=1 flask run
+df_master = None
 
+@app.before_first_request
+def before_request():
+	global df_master
+
+	print('bfr downloading')
+	df_master = g2d.download("1Jds3z4WA9qDrl19qWAOyAVNIUNLtGTzZoijEWHS6Jbc", "shelters", col_names=True, row_names=True)
+
+	print('bfr add geo locations')
+	geolocator = Nominatim()
+	df_master['lat'] = df_master['address'].apply(lambda x: geolocator.geocode(x).latitude)
+	df_master['lng'] = df_master['address'].apply(lambda x: geolocator.geocode(x).longitude)
 
 
 @app.route('/')
 def index():
-	address = request.args.get('address', None)
+	geolocator = Nominatim()
+	print (df_master)
 
-	df = pd.read_csv('shelters.csv')
+	df = df_master.copy()
+
+	address = request.args.get('address', None)
+	
 	df['infobox'] = df.apply(lambda row: '<a href="{}" target="_blank">{}</a>'.format(row['url'], row['name']), axis=1)
 	
 	markers = df.to_dict(orient='records')
@@ -37,7 +58,7 @@ def index():
 	if not address:
 		return render_template('index.html', address=address, found=None, location=None, df=df, map=initmap)
 
-	geolocator = Nominatim()
+	
 	location = geolocator.geocode(address)
 
 	if not location:
